@@ -4,19 +4,32 @@ import java.util.regex.Pattern;
 
 public class Main{
     public static void main(String[] args) {
-        File file = new File("C://Users//acer//IdeaProjects//laba14//src//Math.java");
-        try {
-            if(file.createNewFile()){
-                System.out.println("File has been created");
+        try{
+            FileReader reader = new FileReader("C://Users//acer//IdeaProjects//laba14//src//Text.txt");
+            FileWriter writer = new FileWriter("C://Users//acer//IdeaProjects//laba14//src//Math.txt", true);
+            Pattern pattern = Pattern.compile("(/{2}[^\n]*\n)|(/\\*.*?\\*/)", Pattern.DOTALL);
+            int c;
+            StringBuilder input = new StringBuilder();
+            while ((c = reader.read()) != -1) {
+                switch ((char) c) {
+                    case '{', ';' -> {
+                        input.append((char) c);
+                        input.append("\n");
+                    }
+                    default -> input.append((char) c);
+                }
             }
-        }
-        catch(IOException ex){
+            Matcher matcher = pattern.matcher(input.toString());
+            input = new StringBuilder(matcher.replaceAll(""));
+            writer.write(input.toString());
+            reader.close();
+            writer.close();
+        } catch (IOException ex){
             System.out.println(ex.getMessage());
         }
-
-        try{FileReader fr = new FileReader("C://Users//acer//IdeaProjects//laba14//src//Text.java");
-            FileWriter fw = new FileWriter("C://Users//acer//IdeaProjects//laba14//src//Math.java", true);
-            BufferedReader br=new BufferedReader(fr);
+        /*try(FileReader fr = new FileReader("C://Users//acer//IdeaProjects//laba14//src//Text.txt");
+            FileWriter fw = new FileWriter("C://Users//acer//IdeaProjects//laba14//src//Math.txt", true);
+            BufferedReader br=new BufferedReader(fr)){
             String string="";
             String m = "";
             while ((string=br.readLine())!=null){
@@ -36,5 +49,5 @@ public class Main{
             }
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
-        }
+        }*/
     }}
